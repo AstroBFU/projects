@@ -1,6 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.animation import FuncAnimation
+from mpl_toolkits.axisartist.axislines import Subplot
+
+fig = plt.figure()
+ax = Subplot(fig, 111)
+fig.add_subplot(ax)
+
 G = 6.67 * 10**(-11)
 M = 1.9885*10**30
 a_earth = 50
@@ -13,7 +19,6 @@ Omega = 0.52
 Beta = t_fly * Omega * np.pi/180
 Gamma = np.pi - Beta
 
-fig, ax = plt.subplots()
 circle1, = plt.plot([], [], '-', color='grey', label='-')
 circle2, = plt.plot([], [], '-', color='grey', label='-')
 Earth, = plt.plot([], [], 'o', color='blue', label='Earth',ms=12)
@@ -21,7 +26,7 @@ circle3, = plt.plot([], [], '-', color='r', label='-')
 Sun, = plt.plot([], [], 'o', color='gold', label='The Sun',ms=20)
 Mars, = plt.plot([], [], 'o', color='r', label='Mars', ms=10)
 Satellite, = plt.plot([], [], 'o', color='black', label='Satellite', ms=6)
-time_text = ax.text(0.05, 0.9, '', transform=ax.transAxes)
+
 
 def Sun_move():
   x=0
@@ -51,6 +56,10 @@ edge = 150
 plt.axis('equal')
 ax.set_xlim(-edge, edge)
 ax.set_ylim(-edge, edge)
+ax.axis["right"].set_visible(False)
+ax.axis["left"].set_visible(False)
+ax.axis["bottom"].set_visible(False)
+ax.axis["top"].set_visible(False)
 
 
 def animate(i):
@@ -62,7 +71,7 @@ def animate(i):
   Mars.set_data(object_move(R=75, t=i, T=687, a=0))
   circle3.set_data(traj_sat(R=62))
   Satellite.set_data(object_move(R=62, T=515 ,t=i, a=12))
-
+  ax.set_title(f'Дни: {i}')
 
 ani = FuncAnimation(fig,
                     animate,
